@@ -1,5 +1,3 @@
-Here’s a comprehensive README documentation for your **TaskMaster Application**, covering the application features, setup instructions, usage, and more. Feel free to customize it based on your specific project details.
-
 ---
 
 # TaskMaster
