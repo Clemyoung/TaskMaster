@@ -1,9 +1,9 @@
 const User = require('../models/user');
-// const { generateToken } = require('../config/jwt');
+const { generateToken } = require('../config/jwt');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-// const firebaseAdmin = require('../config/firebase');
-// const cookie = require('cookie');
+const firebaseAdmin = require('../config/firebase');
+const cookie = require('cookie');
 
 /** POST: http://localhost:4001/api/auth/signup 
  * @param : {
@@ -144,30 +144,30 @@ const logout = async (req, res) => {
   };
 
 // Google Login
-// const googleLogin = async (req, res) => {
-//   try {
-//     const { idToken } = req.body;
-//     const decodedToken = await firebaseAdmin.auth().verifyIdToken(idToken);
-//     const googleId = decodedToken.uid;
-//     let user = await User.findOne({ googleId });
+const googleLogin = async (req, res) => {
+  try {
+    const { idToken } = req.body;
+    const decodedToken = await firebaseAdmin.auth().verifyIdToken(idToken);
+    const googleId = decodedToken.uid;
+    let user = await User.findOne({ googleId });
 
-//     if (!user) {
-//       user = await User.create({ email: decodedToken.email, googleId });
-//     }
+    if (!user) {
+      user = await User.create({ email: decodedToken.email, googleId });
+    }
 
-//     const token = generateToken(user);
+    const token = generateToken(user);
 
-//     res.setHeader('Set-Cookie', cookie.serialize('token', token, {
-//       httpOnly: true,
-//       maxAge: 24 * 60 * 60,
-//       sameSite: 'Strict',
-//       path: '/'
-//     }));
+    res.setHeader('Set-Cookie', cookie.serialize('token', token, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60,
+      sameSite: 'Strict',
+      path: '/'
+    }));
 
-//     res.json({ token });
-//   } catch (error) {
-//     res.status(500).json({ message: 'Google login failed', error });
-//   }
-// };
+    res.json({ token });
+  } catch (error) {
+    res.status(500).json({ message: 'Google login failed', error });
+  }
+};
 
-module.exports = { signup, login, logout, refreshAccessToken };
+module.exports = { signup, login, logout, googleLogin, refreshAccessToken };
