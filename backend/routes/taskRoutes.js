@@ -9,4 +9,4 @@ router.get('/task/:id', authMiddleware, getTaskById);
 router.put('/task/:id', authMiddleware, updateTask);
 router.delete('/task/:id', authMiddleware, deleteTask);
 
-module.exports = router;
+module.exports = router; 
