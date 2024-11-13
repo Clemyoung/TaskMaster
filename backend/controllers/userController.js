@@ -12,7 +12,7 @@ const cookie = require('cookie');
 }
 */
 const signup = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, instituteName } = req.body;
   
     try {
       const existingUser = await User.findOne({ email });
@@ -26,13 +26,14 @@ const signup = async (req, res) => {
       const newUser = new User({
         email,
         password: hashedPassword,
+        instituteName
       });
   
       await newUser.save();
   
       // Generate access and refresh tokens
       const accessToken = jwt.sign(
-        { id: newUser._id, email: newUser.email },
+        { id: newUser._id, email: newUser.email, instituteName: newUser.instituteName },
         process.env.TOKEN_SECRET_KEY,
         { expiresIn: "15m" } // Short expiry for access token
       );
@@ -50,15 +51,17 @@ const signup = async (req, res) => {
       res.cookie("refreshToken", refreshToken, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 });
   
       return res.status(201).json({
+        success: true, // Include success field here
         message: "Registration successful",
         user: {
           email: newUser.email,
           id: newUser._id,
+          instituteName: newUser.instituteName,
         },
       });
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ message: "Server error", error: error.message });
+      return res.status(500).json({ success: false, message: "Server error", error: error.message });
     }
   };
 
@@ -70,7 +73,7 @@ const signup = async (req, res) => {
 */
 const login = async (req, res) => {
     try {
-      const { email, password } = req.body;
+      const { instituteName, email, password } = req.body;
   
       if (!email || !password) {
         return res.status(400).json({ error: "Email and password are required" });
@@ -94,9 +97,14 @@ const login = async (req, res) => {
       res.cookie("accessToken", accessToken, { httpOnly: true, maxAge: 15 * 60 * 1000 });
       res.cookie("refreshToken", refreshToken, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 });
   
-      return res.status(200).json({ message: "Login successful", user: { email: user.email, id: user._id, refreshToken: user.refreshToken } });
+      return res.status(200).json({
+        success: true,
+        message: "Login successful",
+        accessToken, // Include accessToken here for client storage
+        user: { email: user.email, id: user._id, instituteName: user.instituteName }
+      });
     } catch (error) {
-      res.status(500).json({ error: "Login failed", details: error.message });
+      res.status(500).json({ success: false, error: "Login failed", details: error.message });
     }
   };
 
@@ -139,7 +147,7 @@ const logout = async (req, res) => {
   
       res.status(200).json({ message: "Logged out successfully", success: true });
     } catch (error) {
-      res.status(500).json({ error: "Logout failed", details: error.message });
+      res.status(500).json({ error: "Logout failed", details: error.message, success:false });
     }
   };
 
