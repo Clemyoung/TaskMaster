@@ -1,0 +1,28 @@
+.home-container {
+    display: flex;
+}
+
+.sidebar {
+    width: 18rem;
+    background-color: black;
+    color: white;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.center-body {
+    width: 65%;
+    height: 100vh;
+}
+
+.right-bar {
+    background-color: black;
+    width: 18rem;
+    color: white;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
