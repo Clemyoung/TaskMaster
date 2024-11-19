@@ -3,7 +3,7 @@
 }
 
 .home-container .sidebar {
-    width: 18rem;
+    width: 20rem;
     background-color: black;
     color: white;
     height: 100vh;
@@ -37,6 +37,43 @@
     justify-content: center;
 }
 
+.home-container .sidebar .first-section .profile-search .search {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgb(77, 66, 66);
+    border-left: 1px solid rgb(66, 55, 55);
+    border-top: 1px solid rgb(43, 37, 37);
+    border-right: 1px solid rgb(77, 66, 66);
+    border-radius: 5px;
+    width: 85%;
+    margin: auto;
+    padding: 6px 8px;
+}
+
+/* Style for the input field */
+.home-container .sidebar .first-section .profile-search .search input {
+    background-color: transparent;
+    border: none;
+    color: white;
+    width: 90%;
+    outline: none; /* Removes the focus outline */
+}
+
+/* Style for the placeholder color */
+.home-container .sidebar .first-section .profile-search .search input::placeholder {
+    color: rgb(216, 196, 196);
+}
+
+/* Remove border when the input is focused */
+.home-container .sidebar .first-section .profile-search .search input:focus {
+    border: none; /* Ensures no border is added on focus */
+    outline: none; /* Also removes the focus outline */
+}
+
+.home-container .sidebar .first-section .profile-search .search i {
+    font-size: 0.7rem;
+}
 
 
 
@@ -47,13 +84,13 @@
 
 
 .home-container .center-body {
-    width: 65%;
+    width: 70%;
     height: 100vh;
 }
 
 .home-container .right-bar {
     background-color: black;
-    width: 25rem;
+    width: 27rem;
     color: white;
     height: 100vh;
     display: flex;
